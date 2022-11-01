@@ -1,8 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
 import {useEffect, useState, useRef, useCallback} from "react";
-import Table from "./Table";
 import useQuery from "./useQuery";
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import * as React from "react";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 
 function App() {
     const [query, setQuery] = useState("")
@@ -24,7 +30,6 @@ function App() {
         if(node) {
             observer.current.observe(node)
         }
-        console.log(node)
     }, [loading, hasMore])
 
 
@@ -36,15 +41,61 @@ function App() {
     return (
     <div className="App">
       <header className="App-header">
-        <input type="text" value={query} placeholder="Pretrazi..." onChange={handleSearch}/>
-          {questions.map((question, index) => {
-              if(questions.length === index + 1) {
-                  return (<div ref={lastElementRef} id={question.id}>{question.question}</div>)
-              }
-              return (<div id={question.id}>{question.question}</div>)
-          })}
-          <div>{loading && "Loading..."}</div>
+
+        {/*<input type="text" value={query} placeholder="Pretrazi..." onChange={handleSearch}/>*/}
+
+          {/*{questions.map((question, index) => {*/}
+          {/*    if(questions.length === index + 1) {*/}
+          {/*        return (<div ref={lastElementRef} id={question.id}>{question.question}</div>)*/}
+          {/*    }*/}
+          {/*    return (<div id={question.id}>{question.question}</div>)*/}
+          {/*})}*/}
+          {/*<div>{loading && "Loading..."}</div>*/}
+          <div>
+              <Box
+                  sx={{
+                      width: 500,
+                      maxWidth: '100%',
+                  }}
+              >
+                  <TextField onChange={handleSearch}  fullWidth label="fullWidth" id="fullWidth" />
+              </Box>
+              {questions.map((question, index) => {
+                  if(index + 1 === questions.length) {
+                      return (<Accordion ref={lastElementRef}>
+                          <AccordionSummary
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls="panel1a-content"
+                              id="panel1a-header"
+                          >
+                              <Typography>{question.question}</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                              <Typography>
+                                  {question.answer}
+                              </Typography>
+                          </AccordionDetails>
+                      </Accordion>)
+                  }
+                  return (<Accordion>
+                      <AccordionSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls="panel1a-content"
+                          id="panel1a-header"
+                      >
+                          <Typography>{question.question}</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                          <Typography>
+                              {question.answer}
+                          </Typography>
+                      </AccordionDetails>
+                  </Accordion>)
+
+              })}
+          </div>
       </header>
+
     </div>
 
   );

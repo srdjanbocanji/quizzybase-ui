@@ -9,7 +9,6 @@ export default function useQuery(query, page) {
     const [hasMore, setHasMore] = useState([])
 
     useEffect(() => {
-        console.log(questions)
         setLoading(true)
         setError(false)
         let cancel
